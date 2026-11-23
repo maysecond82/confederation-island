@@ -1,3 +1,4 @@
+<meta charset="utf-8">
 <title>L’île de la Confédération</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;600;700&family=Poppins:ital,wght@1,700;1,800&display=swap">
@@ -2028,7 +2029,7 @@ document.addEventListener('click',async e=>{const t=e.target.closest&&e.target.c
  else if(a==='endboard'){MP.boardCard('endback');}else if(a==='endback'){render();}});
 
 /* ---------- diplomacy: alliances, wars, written contracts between players ---------- */
-const clean=s=>String(s==null?'':s).replace(/[<>&"'`]/g,'').replace(/[\u0000-\u001f​-‏‪-‮]/g,'').slice(0,300);
+const clean=s=>String(s==null?'':s).replace(/[<>&"'`]/g,'').replace(/[\u0000-\u001f\u200b-\u200f\u202a-\u202e]/g,'').slice(0,300);
 Object.assign(MP,{
  dp:{allies:{},wars:{},inbox:[],contracts:[],log:[],cool:0,seen:0},
  myKey(){const me=this.peers.find(p=>p.isMe);return this.uid||(me&&me.peer)||'me';},
