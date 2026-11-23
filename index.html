@@ -184,7 +184,16 @@ body{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
  .dpad{grid-template:repeat(3,46px)/repeat(3,46px)}.abtn{width:66px;height:66px}.bbtn{width:52px;height:52px}
  .stin{width:min(calc(100cqw - 8px),calc((100cqh - 8px)*30/17))}
  #cv{border-width:3px;box-shadow:none}
+ .hudbar>div{flex-wrap:nowrap}#scr .sc{display:none}.hudbar .btn.small{font-size:12px;padding:3px 7px}
+ #hot{padding:3px 8px;margin-top:3px}#hot .hb small{font-size:10px}#hot .chip{font-size:11px;padding:2px 6px}
+ body:has(#hot:not([hidden])) .pad{bottom:calc(max(8px,env(safe-area-inset-bottom)) + 44px)}
 }
+/* phone held upright: game picture at the top, controls at the bottom */
+@media (pointer:coarse) and (orientation:portrait){
+ .stagewrap{flex:0 0 auto;height:calc((100vw - 16px)*17/30 + 14px)}
+ .pad{margin-top:auto;padding-bottom:4px}
+}
+@media (max-height:560px){#ovr .card{gap:4px;padding:10px 12px}#ovr .card h1{font-size:20px!important}#ovr .card h2{font-size:19px}#ovr .card p{font-size:14px}#ovr .card .muted{font-size:12px!important}#ovr .big-btn{font-size:17px;padding:7px 16px}}
 
 </style>
 <div class="wrap">
