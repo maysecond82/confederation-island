@@ -2505,7 +2505,8 @@ function histCards(){
  const qs=HL.q.map((q,i)=>`<p style="margin:10px 0 4px">${esc(q)}</p><textarea data-rf="${i}" rows="3" placeholder="${HL.ph}" style="width:100%;box-sizing:border-box;font:inherit;padding:6px;background:#1c0e0a;color:#f4e6d0;border:1px solid #6a3a28;border-radius:6px">${esc((RUN.refl||{})[i]||'')}</textarea>`).join('');
  return `<div class="card"><h2>${HL.cause}</h2><ul class="fxl">${groups}</ul></div><div class="card"><h2>${HL.path}</h2><ul class="fxl">${rows}</ul></div><div class="card"><h2>${HL.refl}</h2><p class="muted" style="margin:0">${HL.reflIntro}</p>${qs}</div>`;}
 const _vEnding0=vEnding;
-vEnding=function(){const h=_vEnding0.apply(this,arguments);const i=h.lastIndexOf('<div class="row">');return i<0?h:h.slice(0,i)+histCards()+h.slice(i);};
+vEnding=function(){const h=_vEnding0.apply(this,arguments);const i=h.lastIndexOf('<div class="row">');return i<0?h:h.slice(0,i)+histCards()+thanksCard()+h.slice(i);};
+function thanksCard(){return `<div class="card" style="text-align:center"><h2>Merci!</h2><p class="muted" style="margin:0 0 8px">Un grand merci à :</p><ul class="fxl" style="list-style:none;padding:0;margin:0;font-size:18px;line-height:1.7">${['Jessica','Darya','Lilian','Genevive','Angie','tous les joueurs et joueuses'].map(n=>`<li>${esc(n)}</li>`).join('')}</ul></div>`;}
 document.addEventListener('input',e=>{const t=e.target;if(t&&t.dataset&&t.dataset.rf!==undefined&&typeof RUN!=='undefined'&&RUN){RUN.refl=RUN.refl||{};RUN.refl[t.dataset.rf]=t.value;}});
 
 const IT={
