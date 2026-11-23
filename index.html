@@ -1,4 +1,9 @@
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#120709">
 <title>L’île de la Confédération</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;600;700&family=Poppins:ital,wght@1,700;1,800&display=swap">
@@ -147,14 +152,49 @@ html,body{height:100%;overflow:hidden}
 #mapcv{width:auto;max-width:100%;max-height:46vh}
 #mapiso{width:auto;max-width:100%;max-height:28vh}
 
+/* phones and tablets */
+body{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.hudbar>div{flex-wrap:wrap;justify-content:flex-end}
+.rot{display:none}
+@media (pointer:coarse){
+ .wrap{padding:max(4px,env(safe-area-inset-top)) max(8px,env(safe-area-inset-right)) max(6px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left))}
+ .pad button{user-select:none;-webkit-user-select:none}
+ .pad button:active{filter:brightness(1.3)}
+}
+@media (pointer:coarse) and (orientation:portrait){
+ .dpad{grid-template:repeat(3,58px)/repeat(3,58px)}.abtn{width:80px;height:80px;font-size:30px!important}.bbtn{width:62px;height:62px}
+ .rot{display:block;flex:none;text-align:center;color:var(--muted);font-size:14px;margin:6px 0 0}
+ .wrap:has(#panel:not([hidden])) .rot{display:none}
+}
+@media (max-width:760px),(max-height:560px){
+ .brand{display:none}
+ .hudbar{padding:0 0 4px}
+ .btn.small{font-size:13px;padding:4px 8px}
+ .sc{width:19px;height:19px;font-size:11px;border-width:2px}.lf{font-size:12px;margin-left:4px}
+ .dlg{left:6px;right:6px;bottom:6px;padding:6px 8px;gap:8px}.dp{width:44px;height:44px;border-width:3px}
+ .dt b{font-size:15px}.dt .sub{font-size:12px}.dt p{font-size:15px;min-height:0;margin:2px 0}
+ #ovr{position:fixed;inset:0;z-index:40}#ovr .card{width:100%}
+ #hot{padding:4px 8px;gap:6px;margin-top:4px}#hot .hb{min-width:90px}
+ .pn{margin-top:6px}.card{padding:10px 12px}.pn .q{font-size:18px}.opt{font-size:16px;padding:8px 10px}
+}
+/* phone held sideways: the game fills the screen and the buttons float over its edges */
+@media (pointer:coarse) and (orientation:landscape) and (max-height:560px){
+ .pad{position:fixed;left:0;right:0;bottom:max(8px,env(safe-area-inset-bottom));margin:0;padding:0 max(10px,env(safe-area-inset-right)) 0 max(10px,env(safe-area-inset-left));width:auto;pointer-events:none;z-index:20}
+ .pad button{pointer-events:auto;opacity:.6}
+ .dpad{grid-template:repeat(3,46px)/repeat(3,46px)}.abtn{width:66px;height:66px}.bbtn{width:52px;height:52px}
+ .stin{width:min(calc(100cqw - 8px),calc((100cqh - 8px)*30/17))}
+ #cv{border-width:3px;box-shadow:none}
+}
+
 </style>
 <div class="wrap">
-<div class="hudbar"><span class="brand">L’île de la Confédération</span><div style="display:flex;gap:8px;align-items:center"><div id="scr"></div><button class="btn small" id="quitb" aria-label="Quitter ou recommencer">Quitter</button><button class="btn small" id="bibb" aria-label="Ouvrir la bibliographie">Sources</button><button class="btn small" id="mapb" aria-label="Ouvrir la carte">Carte</button><button class="btn small" id="snd" aria-label="Activer ou couper le son">Son activé</button></div></div>
+<div class="hudbar"><span class="brand">L’île de la Confédération</span><div style="display:flex;gap:8px;align-items:center"><div id="scr"></div><button class="btn small" id="quitb" aria-label="Quitter ou recommencer">Quitter</button><button class="btn small" id="bibb" aria-label="Ouvrir la bibliographie">Sources</button><button class="btn small" id="mapb" aria-label="Ouvrir la carte">Carte</button><button class="btn small" id="snd" aria-label="Activer ou couper le son">Son activé</button><button class="btn small primary" id="fsb" aria-label="Plein écran">Plein écran</button></div></div>
 <div class="stagewrap"><div class="stin"><canvas id="cv"></canvas><div id="dlg" class="dlg" hidden></div><div id="ovr"></div></div></div>
 <div id="hot" hidden></div>
 <div id="panel" class="pn" hidden></div>
 <div class="pad"><div class="dpad"><button class="u" data-k="up" aria-label="Haut">▲</button><button class="l" data-k="left" aria-label="Gauche">◀</button><button class="r" data-k="right" aria-label="Droite">▶</button><button class="d" data-k="down" aria-label="Bas">▼</button></div><div class="abs"><button class="bbtn" data-k="alt" aria-label="Deuxième action">B</button><button class="abtn" data-k="act" aria-label="Action">A</button></div></div>
-<p class="tip">Marchez avec les flèches ou WASD. A pour parler, B est le deuxième bouton, M ouvre la carte.</p>
+<p class="tip">Marchez avec les flèches ou WASD. A pour parler, B est le deuxième bouton, M ouvre la carte, F met en plein écran.</p>
+<p class="rot">Tournez votre téléphone à l’horizontale pour un plus grand écran.</p>
 </div>
 <script>
 (function(){var shown=0,ts=[];function show(m){if(shown)return;shown=1;var d=document.createElement('div');d.style.cssText='position:fixed;left:0;top:0;right:0;bottom:0;z-index:99999;background:#140a0e;color:#f0e0c8;font:16px sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:20px;text-align:center';d.innerHTML='<h2 style="margin:0">Un problème est survenu</h2><p style="max-width:420px;margin:0">Le jeu a rencontré une erreur. Recharger la page règle souvent le problème. Votre progression est enregistrée au début de chaque île : appuyez sur Commencer et choisissez Continuer. Si cela continue, réinitialisez les données enregistrées.</p><code style="font-size:12px;opacity:.7;max-width:420px;word-break:break-word"></code><div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center"><button id="ce_r" style="font:inherit;padding:10px 16px">Recharger</button><button id="ce_c" style="font:inherit;padding:10px 16px">Réinitialiser les données et recharger</button></div>';d.querySelector('code').textContent=m;document.body.appendChild(d);document.getElementById('ce_r').onclick=function(){location.reload();};document.getElementById('ce_c').onclick=function(){try{Object.keys(localStorage).forEach(function(k){if(/^(confed|ci_)/.test(k))localStorage.removeItem(k);});}catch(e){}location.reload();};}
@@ -2663,6 +2703,20 @@ function openEditor(){if(document.getElementById('edov'))return;ED=edSnap();cons
  $('#edimp').onclick=()=>{try{let d=JSON.parse($('#edtxt').value);if(Array.isArray(d))d=Object.assign(edSnap(),{stations:d});if(!d.stations)throw 0;ED=d;edApply(ED);show();msg('Chargé. Appuyez sur Sauvegarder pour le conserver.');}catch(e){msg("Ce texte n'est pas une histoire que je peux lire.");}};
  $('#edx').onclick=()=>o.remove();}
 document.addEventListener('click',e=>{if(e.target.closest('#editb'))openEditor();});
+
+/* ---------- full screen (button or F key); phones also turn sideways ---------- */
+(function(){const d=document,el=d.documentElement,b=d.getElementById('fsb');
+ const can=!!(el.requestFullscreen||el.webkitRequestFullscreen)&&(d.fullscreenEnabled!==false||d.webkitFullscreenEnabled);
+ if(!can){b.hidden=true;return;}
+ const isFs=()=>!!(d.fullscreenElement||d.webkitFullscreenElement);
+ const upd=()=>{b.textContent=isFs()?'Quitter le plein écran':'Plein écran';};
+ async function go(){try{if(isFs()){await (d.exitFullscreen||d.webkitExitFullscreen).call(d);return;}
+   await (el.requestFullscreen||el.webkitRequestFullscreen).call(el,{navigationUI:'hide'});
+   try{if(matchMedia('(pointer:coarse)').matches&&screen.orientation&&screen.orientation.lock)await screen.orientation.lock('landscape');}catch(e){}}
+  catch(e){toast("Le plein écran n'est pas permis ici. Ouvrez le jeu dans son propre onglet.",4500);}}
+ b.addEventListener('click',go);
+ d.addEventListener('keydown',e=>{if((e.key==='f'||e.key==='F')&&!(e.target.matches&&e.target.matches('input,textarea,select'))&&!e.ctrlKey&&!e.metaKey&&!e.altKey)go();});
+ d.addEventListener('fullscreenchange',upd);d.addEventListener('webkitfullscreenchange',upd);upd();})();
 
 window.__ready=1;
 </script>
